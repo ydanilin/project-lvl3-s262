@@ -6,7 +6,7 @@ import pathlib from 'path';
 import rimraf from 'rimraf';
 import getHtmlFileName from '../src/names';
 import download from '../src/download';
-import downloader from '../src';
+import fetchAndSave from '../src';
 
 describe('HTML file name is correct (names.js)', () => {
   test('without path', () =>
@@ -58,7 +58,7 @@ describe('HTML file saved (whole workflow test, index.js)', () => {
     nock('https://ru.hexlet.io')
       .get('/courses')
       .reply(200, result);
-    await downloader(address, dir);
+    await fetchAndSave(address, dir);
     const readData = await mzfs.readFile(pathlib.join(dir, getHtmlFileName(address)), 'utf8');
     expect(readData.toString()).toBe(result);
   });
@@ -67,7 +67,7 @@ describe('HTML file saved (whole workflow test, index.js)', () => {
     nock('https://ru.hexlet.io')
       .get('/courses')
       .replyWithError('index.js connection error');
-    await expect(downloader(address, dir))
+    await expect(fetchAndSave(address, dir))
       .rejects
       .toThrow();
   });
@@ -76,7 +76,7 @@ describe('HTML file saved (whole workflow test, index.js)', () => {
     nock('https://ru.hexlet.io')
       .get('/courses')
       .reply(404, 'not found');
-    await expect(downloader(address, dir))
+    await expect(fetchAndSave(address, dir))
       .rejects
       .toThrow();
   });
@@ -85,7 +85,7 @@ describe('HTML file saved (whole workflow test, index.js)', () => {
     nock('https://ru.hexlet.io')
       .get('/courses')
       .reply(200, result);
-    await expect(downloader(address, '/directoryDoesNotExist'))
+    await expect(fetchAndSave(address, '/directoryDoesNotExist'))
       .rejects
       .toThrow();
   });

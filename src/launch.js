@@ -2,7 +2,7 @@ import program from 'commander';
 import process from 'process';
 import Listr from 'listr';
 import pkgjson from '../package.json';
-import downloader from './';
+import fetchAndSave from './';
 
 export default () => {
   program
@@ -14,7 +14,7 @@ export default () => {
       const tasks = new Listr([
         {
           title: `Download HTML from ${host}`,
-          task: () => downloader(host),
+          task: () => fetchAndSave(host),
         },
       ]);
       tasks.run().catch(err => console.error(err));
