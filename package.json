@@ -1,0 +1,65 @@
+{
+  "name": "pageloader-dan-hexlet",
+  "version": "1.1.0",
+  "description": "Downloads all resources of a specified page",
+  "main": "dist/index.js",
+  "bin": {
+    "pdl": "dist/bin/page-downloader.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "NODE_ENV=production babel src --out-dir dist --source-maps",
+    "prepublishOnly": "npm run build",
+    "test": "jest",
+    "eslint": "eslint",
+    "babel-node": "babel-node",
+    "d": "npm run babel-node -- src/bin/page-downloader"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ydanilin/project-lvl3-s262.git"
+  },
+  "keywords": [
+    "download",
+    "page",
+    "resource",
+    "file",
+    "Hexlet"
+  ],
+  "author": "Yury Danilin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ydanilin/project-lvl3-s262/issues"
+  },
+  "homepage": "https://github.com/ydanilin/project-lvl3-s262#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^8.2.3",
+    "babel-jest": "^23.0.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-0": "^6.24.1",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-babel": "^5.1.0",
+    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-jest": "^21.17.0",
+    "jest": "^23.1.0",
+    "jest-cli": "^23.1.0",
+    "nock": "^9.3.2",
+    "rimraf": "^2.6.2"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "babel-polyfill": "^6.26.0",
+    "commander": "^2.15.1",
+    "listr": "^0.14.1",
+    "mz": "^2.7.0"
+  }
+}

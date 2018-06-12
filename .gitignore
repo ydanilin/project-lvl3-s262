@@ -1,0 +1,9 @@
+/node_modules/
+node_modules
+*.log
+/dist
+flow-typed
+.tern-port
+Vagrantfile
+/.vagrant
+/.vscode
