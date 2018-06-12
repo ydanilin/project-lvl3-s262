@@ -26,20 +26,16 @@ describe('HTML file downloaded (download.js)', () => {
     nock('https://ru.hexlet.io')
       .get('/courses')
       .reply(200, result);
-    expect.assertions(1);
     const response = await download('https://ru.hexlet.io/courses');
     expect(response.data).toBe(result);
   });
   test('common network error', async () => {
     nock('https://ru.hexlet.io')
       .get('/courses')
-      .replyWithError('connection error');
-    expect.assertions(1);
-    try {
-      await download('https://ru.hexlet.io/courses');
-    } catch (e) {
-      expect(e).toEqual(Error('connection error'));
-    }
+      .replyWithError('downloader.js connection error');
+    await expect(download('https://ru.hexlet.io/courses'))
+      .rejects
+      .toThrow();
   });
 });
 
@@ -62,7 +58,6 @@ describe('HTML file saved (whole workflow test, index.js)', () => {
     nock('https://ru.hexlet.io')
       .get('/courses')
       .reply(200, result);
-    expect.assertions(1);
     await downloader(address, dir);
     const readData = await mzfs.readFile(pathlib.join(dir, getHtmlFileName(address)), 'utf8');
     expect(readData.toString()).toBe(result);
@@ -71,36 +66,27 @@ describe('HTML file saved (whole workflow test, index.js)', () => {
   test('common network error', async () => {
     nock('https://ru.hexlet.io')
       .get('/courses')
-      .replyWithError('connection error');
-    expect.assertions(1);
-    try {
-      await downloader(address, dir);
-    } catch (e) {
-      expect(e).toEqual(Error('connection error'));
-    }
+      .replyWithError('index.js connection error');
+    await expect(downloader(address, dir))
+      .rejects
+      .toThrow();
   });
 
   test('404 error', async () => {
     nock('https://ru.hexlet.io')
       .get('/courses')
       .reply(404, 'not found');
-    expect.assertions(1);
-    try {
-      await downloader(address, dir);
-    } catch (e) {
-      expect(e).toBeInstanceOf(Error);
-    }
+    await expect(downloader(address, dir))
+      .rejects
+      .toThrow();
   });
 
   test('wrong output directory name error', async () => {
     nock('https://ru.hexlet.io')
       .get('/courses')
       .reply(200, result);
-    expect.assertions(1);
-    try {
-      await downloader(address, '/directoryDoesNotExist');
-    } catch (e) {
-      expect(e.code).toBe('ENOENT');
-    }
+    await expect(downloader(address, '/directoryDoesNotExist'))
+      .rejects
+      .toThrow();
   });
 });
