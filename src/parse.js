@@ -1,6 +1,7 @@
 import url from 'url';
 import _ from 'lodash';
 import cheerio from 'cheerio';
+import { getAssetNameToSave } from './names';
 
 const neededTags = {
   link: 'href',
@@ -8,24 +9,28 @@ const neededTags = {
   script: 'src',
 };
 
-export default (html, host = 'ru.hexlet.io') => {
-  const checkNoLinkOrOffsite = (tagName, ourHost) => (i, elem) => {
+export default (html, assetDir, ourHost) => {
+  const $ = cheerio.load(html);
+
+  const checkNoLinkOrOffsite = tagName => (i, elem) => {
     const link = $(elem).attr(neededTags[tagName]);
     if (!link) {
       return false;
     }
     const { host } = url.parse(link);
     return host === ourHost || !host;
-  }
+  };
 
-  const $ = cheerio.load(html);
-  const filtered = _.flatten(
-    Object.keys(neededTags)
-      .map(tag => $(tag).filter(checkNoLinkOrOffsite(tag, host)).toArray())
-  );
-  // filtered.map(x => replaceLink(x))
-  filtered.map(x => $(x).attr(neededTags[x.name], 'some link'));
-  // const assetsToDownload = filtered.map(x => {name, address})
-  // return [$.html(), assetsToDownload];
-  console.log($.html());
+  const filtered = _.flatten(Object.keys(neededTags)
+    .map(tag => $(tag).filter(checkNoLinkOrOffsite(tag)).toArray()));
+
+  // replace link in html is a side effect in this map:
+  const assetsToDownload = filtered.map((x) => {
+    const address = $(x).attr(neededTags[x.name]);
+    const localPath = `${assetDir}/${getAssetNameToSave(address)}`;
+    $(x).attr(neededTags[x.name], localPath);
+    return { name: x.name, address, localPath };
+  });
+  console.log(assetsToDownload);
+  return Promise.resolve([$.html(), assetsToDownload]);
 };

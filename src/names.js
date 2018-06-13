@@ -8,8 +8,8 @@ export const getRootNameToSave = (link) => {
 };
 
 export const getBaseUrl = (fullUrl) => {
-  const {protocol, host, port} = url.parse(fullUrl);
-  return url.format({protocol, host, port});
+  const { protocol, host, port } = url.parse(fullUrl);
+  return url.format({ protocol, host, port });
 };
 
 export const getAssetNameToSave = (link) => {

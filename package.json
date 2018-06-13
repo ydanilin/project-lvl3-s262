@@ -15,7 +15,7 @@
     "test": "jest",
     "eslint": "eslint",
     "babel-node": "babel-node",
-    "d": "npm run babel-node -- src/bin/page-downloader https://ya.ru/",
+    "d": "npm run babel-node -- src/bin/page-downloader https://www.google.com/",
     "de": "npm run babel-node -- src/bin/page-downloader"
   },
   "jest": {

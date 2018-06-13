@@ -33,7 +33,7 @@ describe('getHtmlFileName, getBaseUrl, getAssetNameToSave (names.js)', () => {
   test('asset name from relative url', () => {
     expect(getAssetNameToSave('/assets/pictures/gymnastics.jpg'))
       .toBe('assets-pictures-gymnastics.jpg');
-  })
+  });
 });
 
 describe('HTML file downloaded (download.js)', () => {
@@ -117,16 +117,12 @@ describe('parser should return proper asset lists', () => {
 
   test('amount of proper links (with href/src)', async () => {
     nock('https://ru.hexlet.io')
-    .get('/knowledge')
-    .reply(200, fs.readFileSync(`${assetFixturesPath}hexlet_knowledge.html`, 'utf8'))
-    /*
-    .get('/assets/style.css')
-    .reply(200, fs.readFileSync(`${assetFixturesPath}assets/style.css`, 'utf8'))
-    .get('/js/main.js')
-    .reply(200, fs.readFileSync(`${assetFixturesPath}js/main.js`, 'utf8'))
-    .get('/assets/logo.png')
-    .reply(200, fs.createReadStream(`${assetFixturesPath}assets/logo.png`));*/
-  const html = await download(address);
-  parseHtml(html.data);
+      .get('/knowledge')
+      .reply(200, fs.readFileSync(`${assetFixturesPath}hexlet_knowledge.html`, 'utf8'));
+
+    const folder = `${process.cwd()}/${getRootNameToSave(address)}_files`;
+    const html = await download(address);
+    const result = await parseHtml(html.data, folder, 'ru.hexlet.io');
+    expect(result[1]).toHaveLength(8);
   });
 });
