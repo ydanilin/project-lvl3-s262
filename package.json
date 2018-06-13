@@ -15,10 +15,15 @@
     "test": "jest",
     "eslint": "eslint",
     "babel-node": "babel-node",
-    "d": "npm run babel-node -- src/bin/page-downloader https://ya.ru/"
+    "d": "npm run babel-node -- src/bin/page-downloader https://ya.ru/",
+    "de": "npm run babel-node -- src/bin/page-downloader"
   },
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/__fixtures__/"
+    ]
   },
   "repository": {
     "type": "git",
@@ -57,8 +62,12 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "babel-polyfill": "^6.26.0",
+    "cheerio": "^1.0.0-rc.2",
     "commander": "^2.15.1",
+    "import-local": "^1.0.0",
     "listr": "^0.14.1",
+    "lodash": "^4.17.10",
     "mz": "^2.7.0"
   }
 }
