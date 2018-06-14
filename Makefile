@@ -4,8 +4,9 @@ install:
 publish:
 	npm publish
 test:
-	npm run test
+	DEBUG=page-loader:* npm run test
 build:
+	rm -rf dist
 	npm run build
 lint:
 	npm run eslint .
