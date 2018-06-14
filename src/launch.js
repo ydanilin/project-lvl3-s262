@@ -2,7 +2,7 @@ import program from 'commander';
 import process from 'process';
 import Listr from 'listr';
 import pkgjson from '../package.json';
-import fetchAndSave from './';
+import { fetchAndSave, fetchAsset } from './';
 
 export default () => {
   program
@@ -14,7 +14,20 @@ export default () => {
       const tasks = new Listr([
         {
           title: `Download HTML from ${host}`,
-          task: () => fetchAndSave(host),
+          task: ctx => fetchAndSave(host)
+            .then((assetsToDownload) => {
+              ctx.assetsToDownload = assetsToDownload;
+            }),
+        },
+        {
+          title: 'Fetch page assets',
+          task: (ctx) => {
+            const taskList = ctx.assetsToDownload.map(asset => ({
+              title: `${host}${asset.address}`,
+              task: () => fetchAsset(asset),
+            }));
+            return new Listr(taskList, { concurrent: true });
+          },
         },
       ]);
       tasks.run().catch(err => console.error(err));

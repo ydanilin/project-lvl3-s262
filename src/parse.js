@@ -4,16 +4,16 @@ import cheerio from 'cheerio';
 import { getAssetNameToSave } from './names';
 
 const neededTags = {
-  link: 'href',
-  img: 'src',
-  script: 'src',
+  link: { attr: 'href', type: 'text' },
+  img: { attr: 'src', type: 'bin' },
+  script: { attr: 'src', type: 'text' },
 };
 
 export default (html, assetDir, ourHost) => {
   const $ = cheerio.load(html);
 
   const checkNoLinkOrOffsite = tagName => (i, elem) => {
-    const link = $(elem).attr(neededTags[tagName]);
+    const link = $(elem).attr(neededTags[tagName].attr);
     if (!link) {
       return false;
     }
@@ -26,11 +26,12 @@ export default (html, assetDir, ourHost) => {
 
   // replace link in html is a side effect in this map:
   const assetsToDownload = filtered.map((x) => {
-    const address = $(x).attr(neededTags[x.name]);
+    const address = $(x).attr(neededTags[x.name].attr);
     const localPath = `${assetDir}/${getAssetNameToSave(address)}`;
-    $(x).attr(neededTags[x.name], localPath);
-    return { name: x.name, address, localPath };
+    $(x).attr(neededTags[x.name].attr, localPath);
+    return {
+      name: x.name, address, localPath, type: neededTags[x.name].type,
+    };
   });
-  console.log(assetsToDownload);
   return Promise.resolve([$.html(), assetsToDownload]);
 };

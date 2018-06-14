@@ -7,7 +7,7 @@ import rimraf from 'rimraf';
 import axios from '../src/lib/axios';
 import { getRootNameToSave, getBaseUrl, getAssetNameToSave } from '../src/names';
 import download from '../src/download';
-import fetchAndSave from '../src';
+import { fetchAndSave } from '../src';
 import parseHtml from '../src/parse';
 
 describe('getHtmlFileName, getBaseUrl, getAssetNameToSave (names.js)', () => {
