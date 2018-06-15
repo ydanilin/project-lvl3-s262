@@ -4,7 +4,6 @@ import fs from 'fs';
 import mzfs from 'mz/fs';
 import pathlib from 'path';
 import rimraf from 'rimraf';
-import axios from '../src/lib/axios';
 import { getRootNameToSave, getBaseUrl, getAssetNameToSave } from '../src/names';
 import download from '../src/download';
 import { fetchAndSave } from '../src';
@@ -37,23 +36,19 @@ describe('getHtmlFileName, getBaseUrl, getAssetNameToSave (names.js)', () => {
 });
 
 describe('HTML file downloaded (download.js)', () => {
-  beforeAll(() => {
-    axios.defaults.baseURL = 'https://ru.hexlet.io';
-  });
-
   test('load html succsess', async () => {
     const result = '<html><head></head><body>Hexlet courses</body></html>';
     nock('https://ru.hexlet.io')
       .get('/courses')
       .reply(200, result);
-    const response = await download('/courses');
+    const response = await download('https://ru.hexlet.io/courses');
     expect(response.data).toBe(result);
   });
   test('common network error', async () => {
     nock('https://ru.hexlet.io')
       .get('/courses')
       .replyWithError('downloader.js connection error');
-    await expect(download('/courses'))
+    await expect(download('https://ru.hexlet.io/courses'))
       .rejects
       .toThrow();
   });

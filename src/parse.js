@@ -33,5 +33,5 @@ export default (html, assetDir, ourHost) => {
       name: x.name, address, localPath, type: neededTags[x.name].type,
     };
   });
-  return Promise.resolve([$.html(), assetsToDownload]);
+  return [$.html(), assetsToDownload];
 };

@@ -24,9 +24,9 @@ export default () => {
           task: (ctx) => {
             const taskList = ctx.assetsToDownload.map(asset => ({
               title: `${host}${asset.address}`,
-              task: () => fetchAsset(asset),
+              task: () => fetchAsset(asset, host).then(() => {}),
             }));
-            return new Listr(taskList, { concurrent: true });
+            return new Listr(taskList);
           },
         },
       ]);
