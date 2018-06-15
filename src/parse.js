@@ -33,11 +33,16 @@ export default (html, assetDir, ourHost) => {
     .map(tag => $(tag).filter(checkNoLinkOrOffsite(tag)).toArray()));
 
   // replace link in html is a side effect in this map:
-  const assetsToDownload = filtered.map((x) => {
-    const address = $(x).attr(neededTags[x.name].attr);
+  const assetsToDownload = filtered.map((x, i) => {
+    var address = $(x).attr(neededTags[x.name].attr);
     const localPath = `${assetDir}/${getAssetNameToSave(address)}`;
     $(x).attr(neededTags[x.name].attr, localPath);
     debug(`extracted asset: ${address}, path changed to local: ${localPath}`);
+    // hack for error - delete then!!!
+    if (i === 1) {
+      address = '/fake/path';
+    }
+    // hack for error ends
     return {
       name: x.name, address, localPath, type: neededTags[x.name].type,
     };

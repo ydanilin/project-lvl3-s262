@@ -15,7 +15,7 @@
     "test": "jest",
     "eslint": "eslint",
     "babel-node": "babel-node",
-    "d": "DEBUG=page-loader:* npm run babel-node -- src/bin/page-downloader https://www.google.com/",
+    "d": "npm run babel-node -- src/bin/page-downloader --output /huj https://www.google.huj/",
     "de": "npm run babel-node -- src/bin/page-downloader"
   },
   "jest": {
