@@ -1,7 +1,10 @@
 import url from 'url';
 import _ from 'lodash';
 import cheerio from 'cheerio';
+import getDebugger from './lib/debug';
 import { getAssetNameToSave } from './names';
+
+const debug = getDebugger('parse');
 
 const neededTags = {
   link: { attr: 'href', type: 'text' },
@@ -15,10 +18,15 @@ export default (html, assetDir, ourHost) => {
   const checkNoLinkOrOffsite = tagName => (i, elem) => {
     const link = $(elem).attr(neededTags[tagName].attr);
     if (!link) {
+      debug(`dropped tag '${elem.name}' with no ${neededTags[tagName].attr} attribute`);
       return false;
     }
     const { host } = url.parse(link);
-    return host === ourHost || !host;
+    const result = host === ourHost || !host;
+    if (!result) {
+      debug(`dropped offsite link '${link}'`);
+    }
+    return result;
   };
 
   const filtered = _.flatten(Object.keys(neededTags)
@@ -29,9 +37,11 @@ export default (html, assetDir, ourHost) => {
     const address = $(x).attr(neededTags[x.name].attr);
     const localPath = `${assetDir}/${getAssetNameToSave(address)}`;
     $(x).attr(neededTags[x.name].attr, localPath);
+    debug(`extracted asset: ${address}, path changed to local: ${localPath}`);
     return {
       name: x.name, address, localPath, type: neededTags[x.name].type,
     };
   });
+  debug(`total ${assetsToDownload.length} local asset links are extracted`);
   return [$.html(), assetsToDownload];
 };
