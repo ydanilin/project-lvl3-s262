@@ -96,13 +96,40 @@ describe('HTML file saved (whole workflow test, index.js)', () => {
       .toThrow();
   });
 
-  test('wrong output directory name error', async () => {
+  test('create directory in prohibited area (at root)', async () => {
     nock('https://ru.hexlet.io')
       .get('/courses')
       .reply(200, result);
     await expect(fetchAndSave(address, '/directoryDoesNotExist'))
       .rejects
-      .toThrow();
+      .toThrow("You are trying to create directory 'directoryDoesNotExist' in a system-protected place '/'");
+  });
+
+  test('create directory in prohibited area (at /sys)', async () => {
+    nock('https://ru.hexlet.io')
+      .get('/courses')
+      .reply(200, result);
+    await expect(fetchAndSave(address, '/sys/directoryDoesNotExist'))
+      .rejects
+      .toThrow("You are trying to create directory 'directoryDoesNotExist' in a system-protected place '/sys'");
+  });
+
+  test('create directory at non-existing path (at ~/home/directoryDoesNotExist)', async () => {
+    nock('https://ru.hexlet.io')
+      .get('/courses')
+      .reply(200, result);
+    await expect(fetchAndSave(address, '~/home/directoryDoesNotExist'))
+      .rejects
+      .toThrow("Impossible to create directory 'directoryDoesNotExist' because there are non-existing dir(s)");
+  });
+
+  test('save file to system-protected place', async () => {
+    nock('https://ru.hexlet.io')
+      .get('/courses')
+      .reply(200, result);
+    await expect(fetchAndSave(address, '/sys'))
+      .rejects
+      .toThrow("You selected a system-protected directory '/sys' to save file");
   });
 });
 
@@ -117,7 +144,7 @@ describe('parser should return proper asset lists', () => {
 
     const folder = `${process.cwd()}/${getRootNameToSave(address)}_files`;
     const html = await download(address);
-    const result = await parseHtml(html.data, folder, 'ru.hexlet.io');
-    expect(result[1]).toHaveLength(8);
+    const result = await parseHtml(html.data, folder, address);
+    expect(result[1]).toHaveLength(10);
   });
 });

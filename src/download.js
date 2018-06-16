@@ -3,7 +3,7 @@ import axios from './lib/axios';
 
 const debug = getDebugger('download');
 
-const downloadAnyType = (uri, type = 'text') => {
+const download = (uri, type = 'text') => {
   switch (type) {
     case 'bin':
       debug(`invoked downloading binary from: ${uri}`);
@@ -18,16 +18,15 @@ const downloadAnyType = (uri, type = 'text') => {
   }
 };
 
-export default (uri, type = 'text') => {
-  return downloadAnyType(uri, type)
-    .catch((e) => {
-      switch (e.code) {
-        case 'ENOTFOUND':
-          debug(`ERROR: ENOTFOUND ${uri}`);
-          throw new Error(`DNS error: seems like address '${uri}' does not exist`);
-        default:
-          debug(`ERROR: ${e.code} ${e.path}`);
-          throw new Error(e);
-      }
+export default (uri, type = 'text') => download(uri, type)
+  .catch((e) => {
+    switch (e.code) {
+      case 'ENOTFOUND':
+        debug(`ERROR: ENOTFOUND ${uri}`);
+        throw new Error(`DNS error: seems like address '${uri}' does not exist`);
+      default:
+        debug(`ERROR: ${e}`);
+        throw new Error(e);
+    }
   });
-};
+

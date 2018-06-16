@@ -1,5 +1,6 @@
 import url from 'url';
 import pathlib from 'path';
+import parseDomain from 'parse-domain';
 
 export const getRootNameToSave = (link) => {
   const { hostname, path } = url.parse(link);
@@ -17,4 +18,12 @@ export const getAssetNameToSave = (link) => {
   const { dir, ext, name } = pathlib.parse(path);
   const dirpath = dir.replace(/^\W/g, '').replace(/\W/g, '-');
   return `${dirpath}-${name}${ext}`;
+};
+
+export const getWeblinkInfo = (link) => {
+  const { protocol, host } = url.parse(link);
+  const { domain, tld } = parseDomain(link);
+  return {
+    protocol, host, domain, tld, weblink: link,
+  };
 };

@@ -24,13 +24,13 @@ export default () => {
           task: (ctx) => {
             const taskList = ctx.assetsToDownload.map(asset => ({
               title: `${host}${asset.address}`,
-              task: (ctx, task) => fetchAsset(asset, host).catch(() => task.skip('ibo huj')),
+              task: (_, task) => fetchAsset(asset, host).catch(() => task.skip('Error downloading this asset')),
             }));
             return new Listr(taskList, { concurrent: true, collapse: false });
           },
         },
       ], { collapse: false });
-      return tasks.run().catch(err => console.error('huj-huj'));
+      return tasks.run().catch(() => console.error('An error occured'));
     })
     .parse(process.argv);
   if (!program.args.length) {

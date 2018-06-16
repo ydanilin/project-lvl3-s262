@@ -3,8 +3,20 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <!-- link below should be dropped due to offdomain -->
+  <!-- TODO implement filter based on rel attribute (custom filter) -->
+  <link rel="icon" type="image/png" href="//s.rbk.ru/v8_top_static/common/common-8.5.105/images/favicon.png">
+  <!-- these two to test in the future
+  <link rel="alternate" type="application/rss+xml" title="Новости Hexlet" href="/press_releases/news.rss">
+  <link rel="stylesheet" href="//cdn2.hexlet.io/xml/opensearch.xml" title="Hexlet">
+  -->
+  <!-- two scripts should be taken due to subdomain and protocol-relative -->
+  <script src="https://assets.hexlet.io/js/fromassets.js"></script>
+  <script src="//cdn2.hexlet.io/js/fromcrossprotocol.js"></script>
+
   <script async="" src="/js/gtm.js"></script>
-  <link crossorigin="anonymous" href="https://assets-cdn.github.com/assets/frameworks-e04a23d39bf81b7db3c635177756ef51bc171feb440be9e174933c6eb56382da.css" integrity="sha256-4Eoj05v4G32zxjUXd1bvUbwXH+tEC+nhdJM8brVjgto=" media="all" rel="stylesheet">
+  <link crossorigin="anonymous" href="https://assets-cdn.github.com/assets/frameworks-e04a23d39bf81b7db3c635177756ef51bc171feb440be9e174933c6eb56382da.css"
+    integrity="sha256-4Eoj05v4G32zxjUXd1bvUbwXH+tEC+nhdJM8brVjgto=" media="all" rel="stylesheet">
   <link rel="stylesheet" media="all" href="/assets/application-ace.css">
   <title>База знаний Хекслета - Hexlet.io</title>
   <link href="/assets/css.css" rel="stylesheet">
@@ -175,14 +187,11 @@
             Мы рекомендуем прочитать эти книги всем начинающим и опытным программистам.
           </p>
           <p class="d-flex flex-row align-items-center flex-wrap">
-            <img class="kb-image mr-3 mb-2 border" height="200" src="/assets/goal.jpg"
-              width="120">
-            <img class="kb-image mr-3 mb-2 border" height="200" src="/assets/sicp.jpg"
-              width="120">
-            <img class="kb-image mr-3 mb-2 border" height="200" src="/assets/clean_code.jpg"
-              width="120">
-            <img class="kb-image mr-3 mb-2 border" height="200" src="/assets/petzold.jpg"
-              width="120">
+            <img class="kb-image mr-3 mb-2 border" height="200" src="/assets/goal.jpg" width="120">
+            <!-- this book must be handled cross-protocol -->
+            <img class="kb-image mr-3 mb-2 border" height="200" src="//cdn2.hexlet.io/assets/sicp.jpg" width="120">
+            <img class="kb-image mr-3 mb-2 border" height="200" src="/assets/clean_code.jpg" width="120">
+            <img class="kb-image mr-3 mb-2 border" height="200" src="/assets/petzold.jpg" width="120">
           </p>
           <p>
             См. также:
@@ -194,7 +203,9 @@
     </div>
   </div>
   <script>
-    function f() { console.log('function!') };
+    function f() {
+      console.log('function!')
+    };
   </script>
 </body>
 

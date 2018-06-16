@@ -1,4 +1,3 @@
-import url from 'url';
 import pathlib from 'path';
 import getDebugger from './lib/debug';
 import { getRootNameToSave, getBaseUrl } from './names';
@@ -13,9 +12,8 @@ export const fetchAndSave = (weblink, dir = process.cwd()) => {
   const saveHtmlPathName = pathlib.resolve(dir, `${rootNameToSave}.html`);
   const assetDir = pathlib.resolve(dir, `${rootNameToSave}_files`);
   debug(`fetchAndSave - requested URL: ${weblink}, directory for assets: ${assetDir}`);
-  const { host } = url.parse(weblink);
   return download(weblink)
-    .then(response => parse(response.data, assetDir, host))
+    .then(response => parse(response.data, assetDir, weblink))
     .then(([html, assetsToDownload]) => saveFile(saveHtmlPathName, html, 'text')
       .then(() => assetsToDownload));
 };
@@ -24,6 +22,6 @@ export const fetchAsset = (assetRecord, weblink) => {
   const { address, localPath, type } = assetRecord;
   const baseURL = getBaseUrl(weblink);
   debug(`fetchAsset - requested resource from: ${baseURL}${address}`);
-  return download(`${baseURL}${address}`, type)
+  return download(address, type)
     .then(response => saveFile(localPath, response.data, type));
 };

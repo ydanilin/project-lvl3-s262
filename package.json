@@ -15,7 +15,7 @@
     "test": "jest",
     "eslint": "eslint",
     "babel-node": "babel-node",
-    "d": "npm run babel-node -- src/bin/page-downloader --output /huj https://www.google.huj/",
+    "d": "npm run babel-node -- src/bin/page-downloader --output ~/huj https://www.google.com/",
     "de": "npm run babel-node -- src/bin/page-downloader"
   },
   "jest": {
@@ -69,6 +69,7 @@
     "import-local": "^1.0.0",
     "listr": "^0.14.1",
     "lodash": "^4.17.10",
-    "mz": "^2.7.0"
+    "mz": "^2.7.0",
+    "parse-domain": "^2.1.2"
   }
 }
