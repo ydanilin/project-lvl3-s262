@@ -102,7 +102,7 @@ describe('HTML file saved (whole workflow test, index.js)', () => {
       .reply(200, result);
     await expect(fetchAndSave(address, '/directoryDoesNotExist'))
       .rejects
-      .toThrow("You are trying to create directory 'directoryDoesNotExist' in a system-protected place '/'");
+      .toThrow();
   });
 
   test('create directory in prohibited area (at /sys)', async () => {
@@ -111,7 +111,7 @@ describe('HTML file saved (whole workflow test, index.js)', () => {
       .reply(200, result);
     await expect(fetchAndSave(address, '/sys/directoryDoesNotExist'))
       .rejects
-      .toThrow("You are trying to create directory 'directoryDoesNotExist' in a system-protected place '/sys'");
+      .toThrow();
   });
 
   test('create directory at non-existing path (at ~/home/directoryDoesNotExist)', async () => {
@@ -120,7 +120,7 @@ describe('HTML file saved (whole workflow test, index.js)', () => {
       .reply(200, result);
     await expect(fetchAndSave(address, '~/home/directoryDoesNotExist'))
       .rejects
-      .toThrow("Impossible to create directory 'directoryDoesNotExist' because there are non-existing dir(s)");
+      .toThrow();
   });
 
   test('save file to system-protected place', async () => {
@@ -129,7 +129,7 @@ describe('HTML file saved (whole workflow test, index.js)', () => {
       .reply(200, result);
     await expect(fetchAndSave(address, '/sys'))
       .rejects
-      .toThrow("You selected a system-protected directory '/sys' to save file");
+      .toThrow();
   });
 });
 

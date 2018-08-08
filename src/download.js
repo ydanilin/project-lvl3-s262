@@ -29,4 +29,3 @@ export default (uri, type = 'text') => download(uri, type)
         throw new Error(e);
     }
   });
-
